@@ -71,10 +71,14 @@ def accept_connection(connection_info):
     data = decoded_connection_info
     headers = {"Content-Type": "application/json"}
 
+    print(data)
+
     response = requests.post(
         url,
         json=data,
         headers=headers)
+
+    print(response.status_code)    
 
     if response.status_code == 200:
         print('successful')
