@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Startpage
+{% endblock title %}
+
+{% block content %}
+
+<br>
+<section id="main">
+<h3>Connections</h3>
+<li><a href="/connections">Active Connections</a></li>
+<li><a href="/accept">Accept Invitation</a></li>
+<br>
+
+<h3>Credentials</h3>
+<li><a href="/credentials">Credentials</a></li>
+</section>
+
+
+<style>
+  #main li {
+    padding-left: 10px;
+  }
+</style>
+
+{% endblock content %}

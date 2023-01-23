@@ -2,6 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from . import api
 
+def index(request):
+    print('index')
+    return render(request, 'connections/start.html')
+
 def connections(request):
     print('Connections')
 
