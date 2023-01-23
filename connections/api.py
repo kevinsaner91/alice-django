@@ -62,6 +62,7 @@ def get_connection_invitation():
 
 def accept_connection(connection_info):
     print('accept_connection')
+    connection_info = connection_info.replace(" ", "")
     base64_info = connection_info.split('=', 1)
 
     decoded_connection_bytes = base64.b64decode(base64_info[1])
@@ -71,14 +72,16 @@ def accept_connection(connection_info):
     data = decoded_connection_info
     headers = {"Content-Type": "application/json"}
 
+    data = data.replace(" " , "")
     print(data)
 
     response = requests.post(
         url,
-        json=data,
+        data=data,
         headers=headers)
 
     print(response.status_code)    
+    print(response.reason)
 
     if response.status_code == 200:
         print('successful')
