@@ -63,28 +63,52 @@ def get_connection_invitation():
 def accept_connection(connection_info):
     print('accept_connection')
     connection_info = connection_info.replace(" ", "")
-    base64_info = connection_info.split('=', 1)
 
-    decoded_connection_bytes = base64.b64decode(base64_info[1])
-    decoded_connection_info = decoded_connection_bytes.decode()
+    if is_valid_connection_string(connection_info):
 
-    url = 'https://alice-api.educa.ch/out-of-band/receive-invitation'
-    data = decoded_connection_info
-    headers = {"Content-Type": "application/json"}
+        url = 'https://alice-api.educa.ch/out-of-band/receive-invitation'
+        data = decode(connection_info)
+        headers = {"Content-Type": "application/json"}
 
-    data = data.replace(" " , "")
-    print(data)
+        print(data)
 
-    response = requests.post(
+        response = requests.post(
         url,
         data=data,
         headers=headers)
 
-    print(response.status_code)    
-    print(response.reason)
+        print(response.status_code)    
+        print(response.reason)
 
-    if response.status_code == 200:
-        print('successful')
-        return True
+        if response.status_code == 200:
+            print('successful')
+            return True
+        else:
+            return False
     else:
         return False
+
+def is_valid_connection_string(connection_info):
+    print('is_valid_connection_strin')
+    if "oob=" in connection_info:
+        base64_info = connection_info.split('=', 1)
+        try:
+            decoded_connection_bytes = base64.b64decode(base64_info[1])
+            decoded_connection_info = decoded_connection_bytes.decode()
+       
+            json.loads(decoded_connection_info)
+            return True
+        except (json.JSONDecodeError, base64.binascii.Error):
+            print('Connection string format invalid')
+            return False
+    else:
+        return False    
+    
+def decode(connection_info):
+    print('decode')
+    base64_info = connection_info.split('=', 1)
+    
+    decoded_connection_bytes = base64.b64decode(base64_info[1])
+    decoded_connection_info = decoded_connection_bytes.decode()
+    
+    return decoded_connection_info
